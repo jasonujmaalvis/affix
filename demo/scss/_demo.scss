@@ -31,13 +31,15 @@ p {
     > .column {
         &.left {
             @include bp(min-width, $bp-large) {
-                width: 30%;
+                width: 400px;
             }
         }
 
         &.right {
             @include bp(min-width, $bp-large) {
-                width: 70%;
+                float: none;
+                margin-left: 400px;
+                width: auto;
             }
         }
     }

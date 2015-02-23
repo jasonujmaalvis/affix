@@ -78,10 +78,12 @@ p {
 
 @media only screen and (min-width: 992px) {
   .row-main > .column.left {
-    width: 30%; } }
+    width: 400px; } }
 @media only screen and (min-width: 992px) {
   .row-main > .column.right {
-    width: 70%; } }
+    float: none;
+    margin-left: 400px;
+    width: auto; } }
 
 .column.left ul {
   background-color: #f3f3f3; }
