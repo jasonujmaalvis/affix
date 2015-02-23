@@ -1,0 +1,68 @@
+*,
+*:before,
+*:after {
+    @include box-sizing;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+}
+
+header,
+footer {
+    background-color: #f3f3f3;
+    padding: 200px 0;
+    text-align: center;
+}
+
+header {
+    margin-bottom: 40px;
+}
+
+footer {
+    margin-top: 40px;
+}
+
+p {
+    font-weight: bold;
+}
+
+.row-main {
+    > .column {
+        &.left {
+            @include bp(min-width, $bp-large) {
+                width: 30%;
+            }
+        }
+
+        &.right {
+            @include bp(min-width, $bp-large) {
+                width: 70%;
+            }
+        }
+    }
+}
+
+.column.left {
+    ul {
+        background-color: #f3f3f3;
+    }
+
+    li {
+        padding: 15px 20px;
+    }
+}
+
+.column.right {
+    .column {
+        @include bp(min-width, $bp-large) {
+            width: (100% / 4);
+        }
+    }
+
+    .item {
+        height: 200px;
+        border: 2px solid #eee;
+        margin-bottom: 20px;
+    }
+}
