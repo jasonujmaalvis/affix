@@ -16,11 +16,11 @@ footer {
 }
 
 header {
-    margin-bottom: 40px;
+    margin-bottom: 80px;
 }
 
 footer {
-    margin-top: 40px;
+    margin-top: 80px;
 }
 
 p {
@@ -28,7 +28,10 @@ p {
 }
 
 .row-main {
-    > .column {
+    position: relative;
+    background: red;
+
+    .column {
         &.left {
             @include bp(min-width, $bp-large) {
                 width: 400px;
@@ -48,6 +51,7 @@ p {
 .column.left {
     ul {
         background-color: #f3f3f3;
+        margin-top: 20px;
     }
 
     li {
@@ -65,6 +69,6 @@ p {
     .item {
         height: 200px;
         border: 2px solid #eee;
-        margin-bottom: 20px;
+        margin-top: 20px;
     }
 }
