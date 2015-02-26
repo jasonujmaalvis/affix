@@ -1,11 +1,11 @@
 /**
 *
-* @filename     page-scrolling-sidebar.js
+* @filename     affix.js
 * @author       Jason Alvis
 * @pages        All pages
 *
 */
-var FisheyeScrollSidebar = (function ($) {
+var Affix = (function ($) {
     "use strict";
 
     // private alias to settings
@@ -51,7 +51,7 @@ var FisheyeScrollSidebar = (function ($) {
                 return;
             }
 
-            var direction       = FisheyeScrollSidebar.detectDirection(),
+            var direction       = Affix.detectDirection(),
                 scrollPosition  = $(window).scrollTop(),
 
                 headerHeight    = s.header.outerHeight(true),
@@ -136,7 +136,7 @@ var FisheyeScrollSidebar = (function ($) {
         },
 
         bindWindowActions: function(){
-            $(window).bind("scroll", FisheyeScrollSidebar.fixSidebar);
+            $(window).bind("scroll", Affix.fixSidebar);
         }
     };
 })(jQuery);
@@ -144,6 +144,6 @@ var FisheyeScrollSidebar = (function ($) {
 
 jQuery(document).ready(function() {
 
-    FisheyeScrollSidebar.init();
+    Affix.init();
 
 });
