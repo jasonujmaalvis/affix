@@ -35,8 +35,13 @@
                 return direction;
             },
 
-            checkPosition: function(){
-                return "checkPosition called";
+            checkPosition: function(element){
+                var height       = element.height(),
+                    offset       = opts.offset,
+                    offsetTop    = offset.top,
+                    offsetBottom = offset.bottom;
+
+                return offsetTop;
             },
 
             getState: function(){
@@ -48,7 +53,7 @@
             var _this = $(this);
 
             console.log(opts.offset);
-            console.log(api.checkPosition());
+            console.log(api.checkPosition(_this));
             console.log(api.getState());
 
             $(window).on("scroll", function(){
