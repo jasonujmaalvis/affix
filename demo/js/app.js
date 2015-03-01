@@ -7,7 +7,7 @@
 jQuery(document).ready(function() {
 
     $(".column.left").affix({
-
+        background: "purple"
     });
 
 });

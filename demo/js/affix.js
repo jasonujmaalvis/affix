@@ -8,17 +8,35 @@
 (function($){
     "use strict";
 
+    // plugin definition
     $.fn.affix = function(options) {
-        // passing destruct: true allows
-        var settings = $.extend({
-            destruct: false
-        }, options);
+        // extend our default options with those provided.
+        // Note that the first arg to extend is an empty object -
+        // this is to keep from overriding our "defaults" object.
+        var opts = $.extend({}, $.fn.affix.defaults, options);
+
+        opts.API = $.extend({}, $.fn.affix.API);
 
         return this.each(function() {
+            var _this = $(this);
 
-            console.log("called");
-
+            console.log(opts.background);
+            console.log(opts.API.detectDirection());
         });
+    };
+
+    // plugin defaults (can be overriden by $.fn.affix.defaults.propertyName = "something")
+    $.fn.affix.defaults = {
+        destruct:   false,
+        speed:      500,
+        background: "black"
+    };
+
+    // plugin api (where our methods go)
+    $.fn.affix.API = {
+        detectDirection: function(){
+            return "detectDirection called";
+        }
     };
 
 })(jQuery);
