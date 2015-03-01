@@ -7,7 +7,10 @@
 jQuery(document).ready(function() {
 
     $(".column.left").affix({
-        background: "purple"
+        offset: {
+            top:    $("header").outerHeight(true),
+            bottom: $("footer").outerHeight(true)
+        }
     });
 
 });

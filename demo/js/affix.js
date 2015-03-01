@@ -11,32 +11,55 @@
     // plugin definition
     $.fn.affix = function(options) {
         // extend our default options with those provided.
-        // Note that the first arg to extend is an empty object -
+        // note that the first arg to extend is an empty object -
         // this is to keep from overriding our "defaults" object.
         var opts = $.extend({}, $.fn.affix.defaults, options);
 
-        opts.API = $.extend({}, $.fn.affix.API);
+        var api = {
+            settings: {
+                position: 0
+            },
+
+            detectDirection: function(){
+                var start = $(window).scrollTop(),
+                    direction;
+
+                if (start > this.settings.position) {
+                    direction = "down";
+                } else {
+                    direction = "up";
+                }
+
+                this.settings.position = start;
+
+                return direction;
+            },
+
+            checkPosition: function(){
+                return "checkPosition called";
+            },
+
+            getState: function(){
+                return "getState called";
+            }
+        };
 
         return this.each(function() {
             var _this = $(this);
 
-            console.log(opts.background);
-            console.log(opts.API.detectDirection());
+            console.log(opts.offset);
+            console.log(api.checkPosition());
+            console.log(api.getState());
+
+            $(window).on("scroll", function(){
+                console.log(api.detectDirection());
+            });
         });
     };
 
     // plugin defaults (can be overriden by $.fn.affix.defaults.propertyName = "something")
     $.fn.affix.defaults = {
-        destruct:   false,
-        speed:      500,
-        background: "black"
-    };
-
-    // plugin api (where our methods go)
-    $.fn.affix.API = {
-        detectDirection: function(){
-            return "detectDirection called";
-        }
+        offset: 0
     };
 
 })(jQuery);
