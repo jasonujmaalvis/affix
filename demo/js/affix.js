@@ -17,7 +17,8 @@
 
         var api = {
             settings: {
-                position: 0
+                position:   0,
+                lockedTo:   null
             },
 
             detectDirection: function(){
@@ -35,36 +36,121 @@
                 return direction;
             },
 
-            checkPosition: function(element){
-                var height       = element.height(),
-                    offset       = opts.offset,
-                    offsetTop    = offset.top,
-                    offsetBottom = offset.bottom;
+            getState: function(element, scrollHeight, offsetTop, offsetBottom){
+                var el           = $(element),
+                    direction    = this.detectDirection(),
+                    scrollTop    = $(window).scrollTop(),
+                    windowHeight = $(window).height(),
 
-                return offsetTop;
+                    elHeight     = el.outerHeight(true),
+                    elOffset     = el.offset();
+
+                // top of the context reached
+                if(scrollTop <= offsetTop){
+                    return "default";
+                }
+
+                // bottom of the context reached
+                if (scrollTop + windowHeight >= scrollHeight - offsetBottom + opts.spacing){
+                    return "bottom-absolute";
+                }
+
+
+
+
+
+                // bottom of sidebar reached
+                if(direction === "down" && this.settings.lockedTo === "none" && windowHeight + scrollTop > elOffset.top + elHeight + opts.spacing){
+                    return "bottom-fixed";
+                // if sidebar is fixed to top and we scroll down absolute the sidebar so they don't move
+                } else if(direction === "down" && this.settings.lockedTo === "top"){
+                    return "absolute";
+                // top of sidebar reached
+                } else if(direction === "up" && this.settings.lockedTo === "none" && elOffset.top >= scrollTop){
+                    return "top-fixed";
+                // if sidebar is fixed to bottom and we scroll up absolute the sidebar so they don't move
+                } else if(direction === "up" && this.settings.lockedTo === "bottom"){
+                    return "absolute";
+                }
+
+                return false;
             },
 
-            getState: function(){
-                return "getState called";
-            }
+            setPosition: function(element, position){
+                console.log(position);
+
+                if(position === "bottom-fixed"){
+                    element.css({
+                        position:   "fixed",
+                        top:        "auto",
+                        bottom:     opts.spacing + "px"
+                    });
+
+                    this.settings.lockedTo = "bottom";
+                } else if(position === "bottom-absolute"){
+                    element.css({
+                        position:   "absolute",
+                        top:        "auto",
+                        bottom:     "0px"
+                    });
+
+                    this.settings.lockedTo = "none";
+                } else if(position === "top-fixed"){
+                    element.css({
+                        position:   "fixed",
+                        top:        "0px",
+                        bottom:     "auto"
+                    });
+
+                    this.settings.lockedTo = "top";
+                } else if(position === "default"){
+                    element.css({
+                        position:   "relative",
+                        top:        "auto",
+                        bottom:     "auto"
+                    });
+
+                    this.settings.lockedTo = "none";
+                } else if(position === "absolute"){
+                    element.css({
+                        position:   "absolute",
+                        top:        (element.offset().top - element.parent().offset().top) + "px",
+                        bottom:     "auto"
+                    });
+
+                    this.settings.lockedTo = "none";
+                }
+            },
+
+            checkPosition: function(element){
+                var offset       = opts.offset,
+                    offsetTop    = offset.top,
+                    offsetBottom = offset.bottom,
+                    scrollHeight = $("body").height(),
+                    position;
+
+                position = this.getState(element, scrollHeight, offsetTop, offsetBottom);
+
+                // only run if it doesn't return false
+                if(position){
+                    this.setPosition(element, position);
+                }
+            },
         };
 
         return this.each(function() {
             var _this = $(this);
 
-            console.log(opts.offset);
-            console.log(api.checkPosition(_this));
-            console.log(api.getState());
-
             $(window).on("scroll", function(){
-                console.log(api.detectDirection());
+                api.checkPosition(_this);
             });
         });
     };
 
     // plugin defaults (can be overriden by $.fn.affix.defaults.propertyName = "something")
     $.fn.affix.defaults = {
-        offset: 0
+        offset:     0,
+        spacing:    20
     };
 
 })(jQuery);
