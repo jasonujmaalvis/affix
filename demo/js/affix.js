@@ -3,6 +3,7 @@
 * @filename     affix.js
 * @author       Jason Alvis
 * @plugin       Affix
+* @version      1.0.0
 *
 */
 (function($){
@@ -18,7 +19,8 @@
         var api = {
             settings: {
                 position:   0,
-                lockedTo:   null
+                lockedTo:   "none",
+                endReached: false
             },
 
             detectDirection: function(){
@@ -52,15 +54,19 @@
 
                 // bottom of the context reached
                 if (scrollTop + windowHeight >= scrollHeight - offsetBottom + opts.spacing){
-                    return "bottom-absolute";
+                    //if(direction === "down" && this.settings.endReached === false ){
+                        return "bottom-absolute";
+                    //}
                 }
 
-
-
-
+                if(windowHeight - opts.spacing < elHeight){
+                    console.log("tall enough");
+                } else {
+                    console.log("not tall enough");
+                }
 
                 // bottom of sidebar reached
-                if(direction === "down" && this.settings.lockedTo === "none" && windowHeight + scrollTop > elOffset.top + elHeight + opts.spacing){
+                if(direction === "down" && /*this.settings.endReached === false &&*/ this.settings.lockedTo === "none" && windowHeight + scrollTop > elOffset.top + elHeight + opts.spacing){
                     return "bottom-fixed";
                 // if sidebar is fixed to top and we scroll down absolute the sidebar so they don't move
                 } else if(direction === "down" && this.settings.lockedTo === "top"){
@@ -77,8 +83,6 @@
             },
 
             setPosition: function(element, position){
-                console.log(position);
-
                 if(position === "bottom-fixed"){
                     element.css({
                         position:   "fixed",
@@ -94,6 +98,7 @@
                         bottom:     "0px"
                     });
 
+                    //this.settings.endReached = true;
                     this.settings.lockedTo = "none";
                 } else if(position === "top-fixed"){
                     element.css({
@@ -102,6 +107,7 @@
                         bottom:     "auto"
                     });
 
+                    //this.settings.endReached = false;
                     this.settings.lockedTo = "top";
                 } else if(position === "default"){
                     element.css({
@@ -129,6 +135,11 @@
                     scrollHeight = $("body").height(),
                     position;
 
+                // return if element is hidden
+                if (!element.is(":visible")){
+                    return;
+                }
+
                 position = this.getState(element, scrollHeight, offsetTop, offsetBottom);
 
                 // only run if it doesn't return false
@@ -144,6 +155,8 @@
             $(window).on("scroll", function(){
                 api.checkPosition(_this);
             });
+
+            api.checkPosition(_this);
         });
     };
 
@@ -154,34 +167,3 @@
     };
 
 })(jQuery);
-
-// example from the RWD magento theme, left just for reference (will be removed eventually)
-// jQuery.fn.toggleSingle = function (options) {
-
-//     // passing destruct: true allows
-//     var settings = $j.extend({
-//         destruct: false
-//     }, options);
-
-//     return this.each(function () {
-//         if (!settings.destruct) {
-//             $j(this).on('click', function () {
-//                 $j(this)
-//                     .toggleClass('active')
-//                     .next()
-//                     .toggleClass('no-display');
-//             });
-//             // Hide the content
-//             $j(this).next().addClass('no-display');
-//         } else {
-//             // Remove event handler so that the toggle link can no longer be used
-//             $j(this).off('click');
-//             // Remove all classes that were added by this plugin
-//             $j(this)
-//                 .removeClass('active')
-//                 .next()
-//                 .removeClass('no-display');
-//         }
-
-//     });
-// }

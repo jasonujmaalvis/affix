@@ -90,7 +90,8 @@ p {
 
 .column.left ul {
   background-color: #f3f3f3;
-  margin-top: 20px; }
+  margin-top: 20px;
+  height: 600px; }
 .column.left li {
   padding: 15px 20px; }
 
