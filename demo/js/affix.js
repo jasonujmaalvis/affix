@@ -40,12 +40,14 @@
 
             getState: function(element, scrollHeight, offsetTop, offsetBottom){
                 var el           = $(element),
+                    elHeight     = el.outerHeight(true),
+                    elOffset     = el.offset(),
+
                     direction    = this.detectDirection(),
                     scrollTop    = $(window).scrollTop(),
-                    windowHeight = $(window).height(),
 
-                    elHeight     = el.outerHeight(true),
-                    elOffset     = el.offset();
+                    windowHeight = $(window).height(),
+                    windowDiff   = windowHeight - elHeight;
 
                 // top of the context reached
                 if(scrollTop <= offsetTop){
@@ -53,30 +55,31 @@
                 }
 
                 // bottom of the context reached
-                if (scrollTop + windowHeight >= scrollHeight - offsetBottom + opts.spacing){
+                if (scrollTop + windowHeight >= scrollHeight - offsetBottom + windowDiff){
                     //if(direction === "down" && this.settings.endReached === false ){
                         return "bottom-absolute";
                     //}
                 }
 
+                // if the sidebar is tall enough
                 if(windowHeight - opts.spacing < elHeight){
-                    console.log("tall enough");
+                    // bottom of sidebar reached
+                    if(direction === "down" && /*this.settings.endReached === false &&*/ this.settings.lockedTo === "none" && windowHeight + scrollTop > elOffset.top + elHeight + opts.spacing){
+                        return "bottom-fixed";
+                    // if sidebar is fixed to top and we scroll down absolute the sidebar so they don't move
+                    } else if(direction === "down" && this.settings.lockedTo === "top"){
+                        return "absolute";
+                    // top of sidebar reached
+                    } else if(direction === "up" && this.settings.lockedTo === "none" && elOffset.top >= scrollTop){
+                        return "top-fixed";
+                    // if sidebar is fixed to bottom and we scroll up absolute the sidebar so they don't move
+                    } else if(direction === "up" && this.settings.lockedTo === "bottom"){
+                        return "absolute";
+                    }
                 } else {
-                    console.log("not tall enough");
-                }
-
-                // bottom of sidebar reached
-                if(direction === "down" && /*this.settings.endReached === false &&*/ this.settings.lockedTo === "none" && windowHeight + scrollTop > elOffset.top + elHeight + opts.spacing){
-                    return "bottom-fixed";
-                // if sidebar is fixed to top and we scroll down absolute the sidebar so they don't move
-                } else if(direction === "down" && this.settings.lockedTo === "top"){
-                    return "absolute";
-                // top of sidebar reached
-                } else if(direction === "up" && this.settings.lockedTo === "none" && elOffset.top >= scrollTop){
-                    return "top-fixed";
-                // if sidebar is fixed to bottom and we scroll up absolute the sidebar so they don't move
-                } else if(direction === "up" && this.settings.lockedTo === "bottom"){
-                    return "absolute";
+                    if(this.settings.lockedTo === "none"){
+                        return "top-fixed";
+                    }
                 }
 
                 return false;
