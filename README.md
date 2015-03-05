@@ -8,7 +8,7 @@ License: Free General Public License (GPL)<br />
 <h2>Brief</h2>
 Another Affix plugin but this one has a bit of a twist. The affix panel scrolls with the page rather than having an internal scroll if it is too large for the window.
 
-A demo in included please check it out for a fully working example! Any questions fire them away.
+A demo is included please check it out for a fully working example! Any questions or issues please let me know.
 
 <h3>jQuery</h3>
 
