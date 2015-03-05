@@ -1,0 +1,6 @@
+module.exports = {
+    affix: {
+        src: 'js/affix.js',
+        dest: 'js/build/affix.min.js'
+    }
+};

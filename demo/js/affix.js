@@ -1,9 +1,11 @@
 /**
 *
-* @filename     affix.js
-* @author       Jason Alvis
-* @plugin       Affix
-* @version      1.0.0
+* File Name     affix.js
+* Author        Jason Alvis
+* Author Site:  http://www.jasonalvis.co.uk
+* License:      Free General Public License (GPL)
+* Version:      1.0.0
+* Date:         05.03.2015
 *
 */
 (function($){
@@ -48,6 +50,8 @@
 
                     windowHeight = $(window).height(),
                     windowDiff   = windowHeight - elHeight;
+
+                windowDiff = windowDiff < 0 ? opts.spacing : windowDiff;
 
                 // top of the context reached
                 if(scrollTop <= offsetTop){

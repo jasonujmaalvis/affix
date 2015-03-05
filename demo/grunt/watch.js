@@ -14,7 +14,7 @@ module.exports = {
     },
     scripts: {
         files: ['js/**/*.js'],
-        tasks: ['jshint'],
+        tasks: ['jshint', 'uglify'],
         options: {
             spawn: false,
             livereload: true

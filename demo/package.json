@@ -1,10 +1,11 @@
 {
-    "name": "OffcanvasComponent",
-    "version": "0.0.1",
+    "name": "AffixComponent",
+    "version": "1.0.0",
     "author": "Jason Alvis",
-    "description": "Off-canvas",
+    "description": "Affix",
     "keywords": [
-        "off-canvas"
+        "Affix",
+        "Scrolling"
     ],
     "contributors": [
         "Jason Alvis"
@@ -13,6 +14,7 @@
     "devDependencies": {
         "node-sass": "~1.2.3",
         "grunt": "~0.4.1",
+        "grunt-contrib-uglify": "*",
         "grunt-contrib-jshint": "*",
         "grunt-contrib-watch": "~0.5.3",
         "grunt-sass": "~0.16.1",

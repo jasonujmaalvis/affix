@@ -77,8 +77,7 @@ p {
   font-weight: bold; }
 
 .row-main {
-  position: relative;
-  background: red; }
+  position: relative; }
   @media only screen and (min-width: 992px) {
     .row-main .column.left {
       width: 400px; } }
@@ -90,8 +89,7 @@ p {
 
 .column.left ul {
   background-color: #f3f3f3;
-  margin-top: 20px;
-  height: 600px; }
+  margin-top: 20px; }
 .column.left li {
   padding: 15px 20px; }
 
