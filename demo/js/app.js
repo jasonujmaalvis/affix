@@ -5,15 +5,19 @@
 * Author Site:  http://www.jasonalvis.co.uk
 * License:      Free General Public License (GPL)
 * Version:      1.0.0
-* Date:         05.03.2015
+* Date:         03.09.2015
 *
 */
 jQuery(document).ready(function() {
 
     $(".column.left").affix({
         offset: {
-            top:    $("header").outerHeight(true),
-            bottom: $("footer").outerHeight(true)
+            top: function() {
+                return (this.top = $("header").outerHeight(true));
+            },
+            bottom: function() {
+                return (this.bottom = $("footer").outerHeight(true));
+            }
         }
     });
 

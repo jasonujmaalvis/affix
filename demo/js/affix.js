@@ -5,7 +5,7 @@
 * Author Site:  http://www.jasonalvis.co.uk
 * License:      Free General Public License (GPL)
 * Version:      1.0.0
-* Date:         05.03.2015
+* Date:         03.09.2015
 *
 */
 (function($){
@@ -146,6 +146,25 @@
                 if (!element.is(":visible")){
                     return;
                 }
+
+                // if offset is not an object a single number has been provided
+                // set the offset to be applied to both top and bottom.
+                if (typeof offset != "object") {
+                    offsetBottom = offsetTop = offset;
+                }
+
+                // function provided
+                if (typeof offsetTop == "function") {
+                    offsetTop = offset.top(element);
+                }
+
+                // function provided
+                if (typeof offsetBottom == "function") {
+                    offsetBottom = offset.bottom(element);
+                }
+
+                // console.log("checkPosition called");
+                // console.log(opts.offset);
 
                 position = this.getState(element, scrollHeight, offsetTop, offsetBottom);
 

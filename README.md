@@ -12,17 +12,38 @@ A demo is included please check it out for a fully working example! Any question
 
 <h3>jQuery</h3>
 
-Add the following code to your JavaScript file typically on a document.ready:
+Use the following methods to your JavaScript file typically on a document.ready.
+
+If a single number is provided, the offset will be applied in both top and bottom directions:
 
 ```javascript
-jQuery(document).ready(function() {
+    $(".column.left").affix({
+        offset: 15
+    });
+```
 
+To provide a unique bottom and top offset provide an object:
+
+```javascript
     $(".column.left").affix({
         offset: {
-            top:    $("header").outerHeight(true),
-            bottom: $("footer").outerHeight(true)
+            top: 100,
+            bottom: 200
         }
     });
-
-});
 ```
+
+Use a function when you need to dynamically calculate an offset:
+
+```javascript
+    $(".column.left").affix({
+        offset: {
+            top: 100,
+            bottom: function() {
+                return (this.bottom = $("footer").outerHeight(true));
+            }
+        }
+    });
+```
+
+TODO: Provide a method to recalculate the offset when dimensions of the affixed content or the target element is changed to ensure correct positioning.
