@@ -1,195 +1,266 @@
 /**
-*
-* File Name     affix.js
-* Author        Jason Alvis
-* Author Site:  http://www.jasonalvis.co.uk
-* License:      Free General Public License (GPL)
-* Version:      1.0.0
-* Date:         03.09.2015
-*
-*/
-(function($){
-    "use strict";
+ * Affix
+ * @version 2.0.0
+ * @author Jason Alvis
+ * @website http://jasonalvis.co.uk
+ * @license The MIT License (MIT)
+ */
+;(function( $, window, document, undefined ){
+  "use strict";
 
-    // plugin definition
-    $.fn.affix = function(options) {
-        // extend our default options with those provided.
-        // note that the first arg to extend is an empty object -
-        // this is to keep from overriding our "defaults" object.
-        var opts = $.extend({}, $.fn.affix.defaults, options);
+  /**
+   * Affix constructor
+   * @public
+   * @param {HTMLElement|jQuery} element - The element to create the affix for.
+   * @param {Object} [options] - The options
+   */
+  var Affix = function( element, options ){
+    /**
+     * Affix DOM element
+     * @public
+     */
+    this.element = element;
 
-        var api = {
-            settings: {
-                position:   0,
-                lockedTo:   "none",
-                endReached: false
-            },
+    /**
+     * Affix DOM element wrapped in jQuery
+     * @public
+     */
+    this.$element = $(element);
 
-            detectDirection: function(){
-                var start = $(window).scrollTop(),
-                    direction;
+    /**
+     * Affix scroll position
+     * @public
+     */
+    this.scrollPosition = 0;
 
-                if (start > this.settings.position) {
-                    direction = "down";
-                } else {
-                    direction = "up";
-                }
+    /**
+     * Affix locked to
+     * @public
+     */
+    this.lockedTo = null;
 
-                this.settings.position = start;
+    /**
+     * Current options
+     * @public
+     */
+    this.options = options;
 
-                return direction;
-            },
+    /**
+     * Affix init
+     * @public
+     */
+    this.init();
+  };
 
-            getState: function(element, scrollHeight, offsetTop, offsetBottom){
-                var el           = $(element),
-                    elHeight     = el.outerHeight(true),
-                    elOffset     = el.offset(),
+  /**
+   * Default options for the affix
+   * @public
+   */
+  Affix.prototype.defaults = {
+    offset: 0,
+    target: window
+  };
 
-                    direction    = this.detectDirection(),
-                    scrollTop    = $(window).scrollTop(),
+  /**
+   * Init the affix
+   * @public
+   */
+  Affix.prototype.init = function() {
+    this.config = $.extend({}, this.defaults, this.options);
 
-                    windowHeight = $(window).height(),
-                    windowDiff   = windowHeight - elHeight;
+    // bind checkPosition on scroll
+    $(this.config.target).on("scroll", $.proxy(this.checkPosition, this));
 
-                windowDiff = windowDiff < 0 ? opts.spacing : windowDiff;
+    //console.log(this.config.target, this.config.number, this.config.boolean, this.options);
 
-                // top of the context reached
-                if(scrollTop <= offsetTop){
-                    return "default";
-                }
+    return this;
+  };
 
-                // bottom of the context reached
-                if (scrollTop + windowHeight >= scrollHeight - offsetBottom + windowDiff){
-                    //if(direction === "down" && this.settings.endReached === false ){
-                        return "bottom-absolute";
-                    //}
-                }
+  /**
+   * Detect scroll direction
+   * @public
+   */
+  Affix.prototype.detectDirection = function() {
+    var start = $(this.config.target).scrollTop(),
+        direction;
 
-                // if the sidebar is tall enough
-                if(windowHeight - opts.spacing < elHeight){
-                    // bottom of sidebar reached
-                    if(direction === "down" && /*this.settings.endReached === false &&*/ this.settings.lockedTo === "none" && windowHeight + scrollTop > elOffset.top + elHeight + opts.spacing){
-                        return "bottom-fixed";
-                    // if sidebar is fixed to top and we scroll down absolute the sidebar so they don't move
-                    } else if(direction === "down" && this.settings.lockedTo === "top"){
-                        return "absolute";
-                    // top of sidebar reached
-                    } else if(direction === "up" && this.settings.lockedTo === "none" && elOffset.top >= scrollTop){
-                        return "top-fixed";
-                    // if sidebar is fixed to bottom and we scroll up absolute the sidebar so they don't move
-                    } else if(direction === "up" && this.settings.lockedTo === "bottom"){
-                        return "absolute";
-                    }
-                } else {
-                    if(this.settings.lockedTo === "none"){
-                        return "top-fixed";
-                    }
-                }
+    if (start > this.scrollPosition) {
+      direction = "down";
+    } else {
+      direction = "up";
+    }
 
-                return false;
-            },
+    this.scrollPosition = start;
 
-            setPosition: function(element, position){
-                if(position === "bottom-fixed"){
-                    element.css({
-                        position:   "fixed",
-                        top:        "auto",
-                        bottom:     opts.spacing + "px"
-                    });
+    return direction;
+  };
 
-                    this.settings.lockedTo = "bottom";
-                } else if(position === "bottom-absolute"){
-                    element.css({
-                        position:   "absolute",
-                        top:        "auto",
-                        bottom:     "0px"
-                    });
+  /**
+   * Get state
+   * @public
+   */
+  Affix.prototype.getState = function(scrollHeight, elementHeight, offsetTop, offsetBottom) {
+    var elOffset     = this.$element.offset(),
+        direction    = this.detectDirection(),
+        scrollTop    = $(this.config.target).scrollTop(),
+        windowHeight = $(this.config.target).height(),
+        windowDiff   = windowHeight - elementHeight;
 
-                    //this.settings.endReached = true;
-                    this.settings.lockedTo = "none";
-                } else if(position === "top-fixed"){
-                    element.css({
-                        position:   "fixed",
-                        top:        "0px",
-                        bottom:     "auto"
-                    });
+    windowDiff = windowDiff < 0 ? 0 : windowDiff;
 
-                    //this.settings.endReached = false;
-                    this.settings.lockedTo = "top";
-                } else if(position === "default"){
-                    element.css({
-                        position:   "relative",
-                        top:        "auto",
-                        bottom:     "auto"
-                    });
+    // top of the context reached
+    if(scrollTop <= offsetTop){
+      return "default";
+    }
 
-                    this.settings.lockedTo = "none";
-                } else if(position === "absolute"){
-                    element.css({
-                        position:   "absolute",
-                        top:        (element.offset().top - element.parent().offset().top) + "px",
-                        bottom:     "auto"
-                    });
+    // bottom of the context reached
+    if (scrollTop + windowHeight >= scrollHeight - offsetBottom + windowDiff){
+      return "bottom-absolute";
+    }
 
-                    this.settings.lockedTo = "none";
-                }
-            },
+    // if the sidebar is tall enough
+    if(windowHeight - 0 < elementHeight){
+      // bottom of sidebar reached
+      if(direction === "down" && this.lockedTo === null && windowHeight + scrollTop > elOffset.top + elementHeight + 0){
+        return "bottom-fixed";
+      // if sidebar is fixed to top and we scroll down absolute the sidebar so they don't move
+      } else if(direction === "down" && this.lockedTo === "top"){
+        return "absolute";
+      // top of sidebar reached
+      } else if(direction === "up" && this.lockedTo === null && elOffset.top >= scrollTop){
+        return "top-fixed";
+      // if sidebar is fixed to bottom and we scroll up absolute the sidebar so they don't move
+      } else if(direction === "up" && this.lockedTo === "bottom"){
+        return "absolute";
+      }
+    } else {
+      if(this.lockedTo === null){
+        return "top-fixed";
+      }
+    }
 
-            checkPosition: function(element){
-                var offset       = opts.offset,
-                    offsetTop    = offset.top,
-                    offsetBottom = offset.bottom,
-                    scrollHeight = $("body").height(),
-                    position;
+    return false;
+  };
 
-                // return if element is hidden
-                if (!element.is(":visible")){
-                    return;
-                }
+  /**
+   * Set position
+   * @public
+   */
+  Affix.prototype.setPosition = function(position) {
+    if(position === "bottom-fixed"){
+      this.$element.css({
+        position: "fixed",
+        top:      "auto",
+        bottom:   0 + "px"
+      });
 
-                // if offset is not an object a single number has been provided
-                // set the offset to be applied to both top and bottom.
-                if (typeof offset != "object") {
-                    offsetBottom = offsetTop = offset;
-                }
+      this.lockedTo = "bottom";
+    } else if(position === "bottom-absolute"){
+      this.$element.css({
+        position: "absolute",
+        top:      "auto",
+        bottom:   "0px"
+      });
 
-                // function provided
-                if (typeof offsetTop == "function") {
-                    offsetTop = offset.top(element);
-                }
+      this.lockedTo = null;
+    } else if(position === "top-fixed"){
+      this.$element.css({
+        position: "fixed",
+        top:      "0px",
+        bottom:   "auto"
+      });
 
-                // function provided
-                if (typeof offsetBottom == "function") {
-                    offsetBottom = offset.bottom(element);
-                }
+      this.lockedTo = "top";
+    } else if(position === "default"){
+      this.$element.css({
+        position: "relative",
+        top:      "auto",
+        bottom:   "auto"
+      });
 
-                // console.log("checkPosition called");
-                // console.log(opts.offset);
+      this.lockedTo = null;
+    } else if(position === "absolute"){
+      this.$element.css({
+        position: "absolute",
+        top:      (this.$element.offset().top - this.$element.parent().offset().top) + "px",
+        bottom:   "auto"
+      });
 
-                position = this.getState(element, scrollHeight, offsetTop, offsetBottom);
+      this.lockedTo = null;
+    }
+  };
 
-                // only run if it doesn't return false
-                if(position){
-                    this.setPosition(element, position);
-                }
-            },
-        };
+  /**
+   * Check position
+   * @public
+   */
+  Affix.prototype.checkPosition = function() {
+    // return if element is hidden
+    if (!this.$element.is(":visible")){
+        return;
+    }
 
-        return this.each(function() {
-            var _this = $(this);
+    var offset        = this.config.offset,
+        offsetTop     = offset.top,
+        offsetBottom  = offset.bottom,
+        elementHeight = this.$element.height(),
+        scrollHeight  = Math.max( $(document).height(), $(document.body).height() ),
+        position;
 
-            $(window).on("scroll", function(){
-                api.checkPosition(_this);
-            });
+    // if offset is not an object a single number has been provided
+    // set the offset to be applied to both top and bottom.
+    if (typeof offset != "object") {
+      offsetBottom = offsetTop = offset;
+    }
 
-            api.checkPosition(_this);
-        });
-    };
+    // function provided
+    if (typeof offsetTop == "function") {
+      offsetTop = offset.top(this.$element);
+    }
 
-    // plugin defaults (can be overriden by $.fn.affix.defaults.propertyName = "something")
-    $.fn.affix.defaults = {
-        offset:     0,
-        spacing:    20
-    };
+    // function provided
+    if (typeof offsetBottom == "function") {
+      offsetBottom = offset.bottom(this.$element);
+    }
 
-})(jQuery);
+    // set position
+    position = this.getState(scrollHeight, elementHeight, offsetTop, offsetBottom);
+
+    // only run if it doesn't return false
+    if(position){
+      this.setPosition(position);
+    }
+
+    // console.log("offsetTop ", offsetTop);
+    // console.log("offsetBottom", offsetBottom);
+  };
+
+  /**
+   * Create a shortened reference point for our defaults
+   */
+  Affix.defaults = Affix.prototype.defaults;
+
+  /**
+   * The jQuery affix interface
+   * @public
+   */
+  $.fn.affix = function(options) {
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    return this.each(function() {
+      var item = $(this),
+          data = item.data('affix');
+
+      if(!data) {
+        // create affix data if not created
+        item.data('affix', new Affix(this, options));
+      } else {
+        // otherwise check arguments for method call
+        if(typeof options === 'string') {
+          data[options].apply(data, args);
+        }
+      }
+    });
+  };
+
+})( jQuery, window, document );

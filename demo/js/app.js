@@ -1,13 +1,10 @@
 /**
-*
-* File Name     app.js
-* Author        Jason Alvis
-* Author Site:  http://www.jasonalvis.co.uk
-* License:      Free General Public License (GPL)
-* Version:      1.0.0
-* Date:         03.09.2015
-*
-*/
+ * Affix
+ * @version 2.0.0
+ * @author Jason Alvis
+ * @website http://jasonalvis.co.uk
+ * @license The MIT License (MIT)
+ */
 jQuery(document).ready(function() {
 
     $(".column.left").affix({
