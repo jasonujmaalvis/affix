@@ -52,7 +52,7 @@ Recalculate the state of the affix based on the dimensions, position, and scroll
 $(".js-my-affix").affix("checkPosition");
 ```
 
-Recalculate the offset positions, this needs to be set whenever the offset changes e.g on rezize or when the offset element changes dimensions.
+Recalculate the offset positions, this needs to be set whenever the offset changes e.g on resize or when the offset element changes dimensions.
 
 ```javascript
 $(".js-my-affix").data("affix").options.offset.top = 100;
