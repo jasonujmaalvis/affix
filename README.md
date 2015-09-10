@@ -2,7 +2,7 @@
 
 Author: Jason Alvis<br />
 Author Email: hello@jasonalvis.co.uk<br />
-Version: 1.0.0<br />
+Version: 2.0.0<br />
 License: Free General Public License (GPL)<br />
 
 <h2>Brief</h2>
@@ -18,17 +18,17 @@ If a single number is provided, the offset will be applied in both top and botto
 
 ```javascript
 $(".js-my-affix").affix({
-    offset: 15
+    offset: 10
 });
 ```
 
 To provide a unique bottom and top offset provide an object:
 
 ```javascript
-$(".my-affix").affix({
+$(".js-my-affix").affix({
     offset: {
-        top: 100,
-        bottom: 200
+        top: 10,
+        bottom: 20
     }
 });
 ```
@@ -38,7 +38,7 @@ Use a function when you need to dynamically calculate an offset:
 ```javascript
 $(".js-my-affix").affix({
     offset: {
-        top: 100,
+        top: 10,
         bottom: function() {
             return (this.bottom = $("footer").outerHeight(true));
         }
@@ -46,13 +46,15 @@ $(".js-my-affix").affix({
 });
 ```
 
-Recalculates the state of the affix based on the dimensions, position, and scroll position of the relevant elements. This method needs to be called whenever the dimensions of the affixed content or the target element are changed, to ensure correct positioning of the affixed content.
+Recalculate the state of the affix based on the dimensions, position, and scroll position of the relevant elements. This method needs to be called whenever the dimensions of the affixed content or the target element are changed, to ensure correct positioning of the affixed content.
 
 ```javascript
 $(".js-my-affix").affix("checkPosition");
+```
 
 Recalculate the offset positions, this needs to be set whenever the offset changes e.g on rezize or when the offset element changes dimensions.
 
 ```javascript
-$(".js-my-affix").data("affix").options.offset.top = 1000;
-$(".js-my-affix").data("affix").options.offset.bottom = 2000;
+$(".js-my-affix").data("affix").options.offset.top = 100;
+$(".js-my-affix").data("affix").options.offset.bottom = 200;
+```
