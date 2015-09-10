@@ -4,13 +4,13 @@
 
 // Clearfix
 %clearfix {
-    &:before,
-    &:after {
-        content: " "; // 1
-        display: table; // 2
-    }
+  &:before,
+  &:after {
+    content: ' '; // 1
+    display: table; // 2
+  }
 
-    &:after {
-        clear: both;
-    }
+  &:after {
+    clear: both;
+  }
 }

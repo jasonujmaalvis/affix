@@ -1,9 +1,10 @@
-/**
+/**!
  * Affix
  * @version 2.0.0
  * @author Jason Alvis
  * @website http://jasonalvis.co.uk
  * @license The MIT License (MIT)
+ * @url https://github.com/jasonalvis/affix
  */
 ;(function( $, window, document, undefined ){
   "use strict";

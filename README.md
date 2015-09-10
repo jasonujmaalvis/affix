@@ -10,7 +10,7 @@ Another Affix plugin but this one has a bit of a twist. The affix panel scrolls 
 
 A demo is included please check it out for a fully working example! Any questions or issues please let me know.
 
-<h3>jQuery</h3>
+<h3>How To Use</h3>
 
 Use the following methods in your JavaScript file typically on a document.ready.
 
@@ -45,6 +45,8 @@ $(".js-my-affix").affix({
     }
 });
 ```
+
+<h3>Recalculate</h3>
 
 Recalculate the state of the affix based on the dimensions, position, and scroll position of the relevant elements. This method needs to be called whenever the dimensions of the affixed content or the target element are changed, to ensure correct positioning of the affixed content.
 

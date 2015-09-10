@@ -1,5 +1,5 @@
 .container:before, .row:before, .container:after, .row:after {
-  content: " ";
+  content: ' ';
   display: table; }
 .container:after, .row:after {
   clear: both; }
@@ -38,8 +38,8 @@ table {
   border-spacing: 0; }
 
 .container {
-  margin-right: auto;
   margin-left: auto;
+  margin-right: auto;
   padding-left: 20px;
   padding-right: 20px;
   max-width: 1200px; }
@@ -50,9 +50,9 @@ table {
 
 .column {
   float: left;
-  width: 100%;
   padding-left: 20px;
-  padding-right: 20px; }
+  padding-right: 20px;
+  width: 100%; }
 
 *, *:before, *:after {
   -webkit-box-sizing: border-box;
