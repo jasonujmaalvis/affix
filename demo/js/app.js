@@ -9,13 +9,21 @@ jQuery(document).ready(function() {
 
     $(".column.left").affix({
         offset: {
-            top: function() {
-                return (this.top = $("header").outerHeight(true));
-            },
-            bottom: function() {
-                return (this.bottom = $("footer").outerHeight(true));
-            }
+            top: $("header").outerHeight(true),
+            bottom: $("footer").outerHeight(true)
         }
+    });
+
+    $("header").on("click", function(){
+        $(this).css({ padding: "10px" });
+
+        //$(".column.left").data();
+
+        $(".column.left").data("affix").options.offset.top = $("header").outerHeight(true);
+
+        console.log( $(".column.left").data("affix").options.offset.top );
+
+        //$(".column.left").affix("checkPosition");
     });
 
 });

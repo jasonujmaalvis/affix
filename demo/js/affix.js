@@ -68,10 +68,14 @@
   Affix.prototype.init = function() {
     this.config = $.extend({}, this.defaults, this.options);
 
-    // bind checkPosition on scroll
-    $(this.config.target).on("scroll", $.proxy(this.checkPosition, this));
+    // Target
+    this.$target = $(this.config.target);
 
-    //console.log(this.config.target, this.config.number, this.config.boolean, this.options);
+    // Bind checkPosition on scroll
+    this.$target.on("scroll", $.proxy(this.checkPosition, this));
+
+    // Bind checkPosition without scrolling on initial page load
+    this.checkPosition();
 
     return this;
   };
@@ -81,7 +85,7 @@
    * @public
    */
   Affix.prototype.detectDirection = function() {
-    var start = $(this.config.target).scrollTop(),
+    var start = this.$target.scrollTop(),
         direction;
 
     if (start > this.scrollPosition) {
@@ -102,34 +106,34 @@
   Affix.prototype.getState = function(scrollHeight, elementHeight, offsetTop, offsetBottom) {
     var elOffset     = this.$element.offset(),
         direction    = this.detectDirection(),
-        scrollTop    = $(this.config.target).scrollTop(),
-        windowHeight = $(this.config.target).height(),
+        scrollTop    = this.$target.scrollTop(),
+        windowHeight = this.$target.height(),
         windowDiff   = windowHeight - elementHeight;
 
     windowDiff = windowDiff < 0 ? 0 : windowDiff;
 
-    // top of the context reached
+    // Top of the context reached
     if(scrollTop <= offsetTop){
       return "default";
     }
 
-    // bottom of the context reached
+    // Bottom of the context reached
     if (scrollTop + windowHeight >= scrollHeight - offsetBottom + windowDiff){
       return "bottom-absolute";
     }
 
-    // if the sidebar is tall enough
-    if(windowHeight - 0 < elementHeight){
-      // bottom of sidebar reached
-      if(direction === "down" && this.lockedTo === null && windowHeight + scrollTop > elOffset.top + elementHeight + 0){
+    // If the sidebar is tall enough
+    if(windowHeight < elementHeight){
+      // Bottom of sidebar reached
+      if(direction === "down" && this.lockedTo === null && windowHeight + scrollTop > elOffset.top + elementHeight){
         return "bottom-fixed";
-      // if sidebar is fixed to top and we scroll down absolute the sidebar so they don't move
+      // If sidebar is fixed to top and we scroll down absolute the sidebar so they don't move
       } else if(direction === "down" && this.lockedTo === "top"){
         return "absolute";
-      // top of sidebar reached
+      // Top of sidebar reached
       } else if(direction === "up" && this.lockedTo === null && elOffset.top >= scrollTop){
         return "top-fixed";
-      // if sidebar is fixed to bottom and we scroll up absolute the sidebar so they don't move
+      // If sidebar is fixed to bottom and we scroll up absolute the sidebar so they don't move
       } else if(direction === "up" && this.lockedTo === "bottom"){
         return "absolute";
       }
@@ -151,7 +155,7 @@
       this.$element.css({
         position: "fixed",
         top:      "auto",
-        bottom:   0 + "px"
+        bottom:   "0px"
       });
 
       this.lockedTo = "bottom";
@@ -195,7 +199,7 @@
    * @public
    */
   Affix.prototype.checkPosition = function() {
-    // return if element is hidden
+    // Return if the element is hidden
     if (!this.$element.is(":visible")){
         return;
     }
@@ -207,36 +211,33 @@
         scrollHeight  = Math.max( $(document).height(), $(document.body).height() ),
         position;
 
-    // if offset is not an object a single number has been provided
+    // If offset is not an object a single number has been provided
     // set the offset to be applied to both top and bottom.
     if (typeof offset != "object") {
       offsetBottom = offsetTop = offset;
     }
 
-    // function provided
+    // Function provided
     if (typeof offsetTop == "function") {
       offsetTop = offset.top(this.$element);
     }
 
-    // function provided
+    // Function provided
     if (typeof offsetBottom == "function") {
       offsetBottom = offset.bottom(this.$element);
     }
 
-    // set position
+    // Set position
     position = this.getState(scrollHeight, elementHeight, offsetTop, offsetBottom);
 
-    // only run if it doesn't return false
+    // Only run if it doesn't return false
     if(position){
       this.setPosition(position);
     }
-
-    // console.log("offsetTop ", offsetTop);
-    // console.log("offsetBottom", offsetBottom);
   };
 
   /**
-   * Create a shortened reference point for our defaults
+   * Create a shorthand reference point for our defaults
    */
   Affix.defaults = Affix.prototype.defaults;
 
@@ -252,10 +253,10 @@
           data = item.data('affix');
 
       if(!data) {
-        // create affix data if not created
+        // Create affix data if not created
         item.data('affix', new Affix(this, options));
       } else {
-        // otherwise check arguments for method call
+        // Otherwise check arguments for method call
         if(typeof options === 'string') {
           data[options].apply(data, args);
         }

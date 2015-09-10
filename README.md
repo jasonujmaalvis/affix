@@ -17,7 +17,7 @@ Use the following methods in your JavaScript file typically on a document.ready.
 If a single number is provided, the offset will be applied in both top and bottom directions:
 
 ```javascript
-$(".column.left").affix({
+$(".js-my-affix").affix({
     offset: 15
 });
 ```
@@ -25,7 +25,7 @@ $(".column.left").affix({
 To provide a unique bottom and top offset provide an object:
 
 ```javascript
-$(".column.left").affix({
+$(".my-affix").affix({
     offset: {
         top: 100,
         bottom: 200
@@ -36,7 +36,7 @@ $(".column.left").affix({
 Use a function when you need to dynamically calculate an offset:
 
 ```javascript
-$(".column.left").affix({
+$(".js-my-affix").affix({
     offset: {
         top: 100,
         bottom: function() {
@@ -46,4 +46,13 @@ $(".column.left").affix({
 });
 ```
 
-TODO: Provide a method to recalculate the offset when dimensions of the affixed content or the target element is changed to ensure correct positioning.
+Recalculates the state of the affix based on the dimensions, position, and scroll position of the relevant elements. This method needs to be called whenever the dimensions of the affixed content or the target element are changed, to ensure correct positioning of the affixed content.
+
+```javascript
+$(".js-my-affix").affix("checkPosition");
+
+Recalculate the offset positions, this needs to be set whenever the offset changes e.g on rezize or when the offset element changes dimensions.
+
+```javascript
+$(".js-my-affix").data("affix").options.offset.top = 1000;
+$(".js-my-affix").data("affix").options.offset.bottom = 2000;
