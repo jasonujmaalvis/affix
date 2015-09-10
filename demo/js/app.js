@@ -1,24 +1,18 @@
-/**
-*
-* File Name     app.js
-* Author        Jason Alvis
-* Author Site:  http://www.jasonalvis.co.uk
-* License:      Free General Public License (GPL)
-* Version:      1.0.0
-* Date:         03.09.2015
-*
-*/
+/**!
+ * Affix
+ * @version 2.0.0
+ * @author Jason Alvis
+ * @website http://jasonalvis.co.uk
+ * @license The MIT License (MIT)
+ * @url https://github.com/jasonalvis/affix
+ */
 jQuery(document).ready(function() {
 
-    $(".column.left").affix({
-        offset: {
-            top: function() {
-                return (this.top = $("header").outerHeight(true));
-            },
-            bottom: function() {
-                return (this.bottom = $("footer").outerHeight(true));
-            }
-        }
-    });
+  $(".column.left").affix({
+    offset: {
+      top: $("header").outerHeight(true),
+      bottom: $("footer").outerHeight(true)
+    }
+  });
 
 });

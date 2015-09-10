@@ -1,16 +1,16 @@
-@charset "UTF-8";
+@charset 'UTF-8';
 
 // -------------------------------------------------------------- //
 // Utilities ---------------------------------------------------- //
 // -------------------------------------------------------------- //
-@import "utilities/vars";
-@import "utilities/mixins/box-sizing";
-@import "utilities/mixins/breakpoint";
-@import "utilities/placeholders/clearfix";
+@import 'utilities/vars';
+@import 'utilities/mixins/box-sizing';
+@import 'utilities/mixins/breakpoint';
+@import 'utilities/placeholders/clearfix';
 
 // -------------------------------------------------------------- //
 // Component ---------------------------------------------------- //
 // -------------------------------------------------------------- //
-@import "reset";
-@import "grid";
-@import "demo";
+@import 'reset';
+@import 'grid';
+@import 'demo';
