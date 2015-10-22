@@ -1,61 +1,58 @@
-/**!
- * Affix
+/*!
+ * Affix jQuery Plugin
  * @version 2.0.0
- * @author Jason Alvis
- * @website http://jasonalvis.co.uk
+ * @author  Jason Alvis
+ * @url     https://github.com/jasonalvis/affix
  * @license The MIT License (MIT)
- * @url https://github.com/jasonalvis/affix
  */
 ;(function( $, window, document, undefined ){
   "use strict";
 
   /**
    * Affix constructor
-   * @public
-   * @param {HTMLElement|jQuery} element - The element to create the affix for.
-   * @param {Object} [options] - The options
+   * @param {HTMLElement|jQuery} element - The element to create the affix for
+   * @param {Object} options             - The options
    */
   var Affix = function( element, options ){
     /**
-     * Affix DOM element
-     * @public
+     * DOM affix element
+     * @type {Object}
      */
     this.element = element;
 
     /**
-     * Affix DOM element wrapped in jQuery
-     * @public
+     * DOM affix element wrapped in jQuery
+     * @type {Object}
      */
     this.$element = $(element);
 
     /**
-     * Affix scroll position
-     * @public
+     * Scroll position
+     * @type {Number}
      */
     this.scrollPosition = 0;
 
     /**
-     * Affix locked to
-     * @public
+     * Locked to
+     * @type {Object}
      */
     this.lockedTo = null;
 
     /**
      * Current options
-     * @public
+     * @type {Object}
      */
     this.options = options;
 
     /**
-     * Affix init
-     * @public
+     * Init
      */
     this.init();
   };
 
   /**
-   * Default options for the affix
-   * @public
+   * Default options
+   * @type {Object}
    */
   Affix.prototype.defaults = {
     offset: 0,
@@ -64,7 +61,7 @@
 
   /**
    * Init the affix
-   * @public
+   * @return {Object}
    */
   Affix.prototype.init = function() {
     this.config = $.extend({}, this.defaults, this.options);
@@ -83,7 +80,7 @@
 
   /**
    * Detect scroll direction
-   * @public
+   * @return {String} - The direction of the window scrolling
    */
   Affix.prototype.detectDirection = function() {
     var start = this.$target.scrollTop(),
@@ -102,7 +99,11 @@
 
   /**
    * Get state
-   * @public
+   * @param  {Number} scrollHeight  - The height of the document
+   * @param  {Number} elementHeight - The height of the affix element
+   * @param  {Number} offsetTop     - The options offset top
+   * @param  {Number} offsetBottom  - The options offset bottom
+   * @return {String}               - The state of the affix element
    */
   Affix.prototype.getState = function(scrollHeight, elementHeight, offsetTop, offsetBottom) {
     var elOffset     = this.$element.offset(),
@@ -149,7 +150,7 @@
 
   /**
    * Set position
-   * @public
+   * @param {String} position - Set the position of the affix element
    */
   Affix.prototype.setPosition = function(position) {
     if(position === "bottom-fixed"){
@@ -197,7 +198,7 @@
 
   /**
    * Check position
-   * @public
+   * @return {String} - Get the position of the affix element
    */
   Affix.prototype.checkPosition = function() {
     // Return if the element is hidden
@@ -239,12 +240,14 @@
 
   /**
    * Create a shorthand reference point for our defaults
+   * @type {Object}
    */
   Affix.defaults = Affix.prototype.defaults;
 
   /**
-   * The jQuery affix interface
-   * @public
+   * jQuery Affix interface
+   * @param  {Object} options - The options
+   * @return {Object}         - The affix object
    */
   $.fn.affix = function(options) {
     var args = Array.prototype.slice.call(arguments, 1);

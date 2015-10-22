@@ -1,10 +1,9 @@
-/**!
- * Affix
+/*!
+ * Affix jQuery Plugin
  * @version 2.0.0
- * @author Jason Alvis
- * @website http://jasonalvis.co.uk
+ * @author  Jason Alvis
+ * @url     https://github.com/jasonalvis/affix
  * @license The MIT License (MIT)
- * @url https://github.com/jasonalvis/affix
  */
 jQuery(document).ready(function() {
 

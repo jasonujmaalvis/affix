@@ -1,7 +1,7 @@
 module.exports = {
   dist: {
     options: {
-      outputStyle: 'nested'
+      outputStyle: 'compressed'
     },
     files: {
       'css/styles.css': 'scss/styles.scss'
