@@ -3,7 +3,6 @@
  * @version 2.0.0
  * @author  Jason Alvis
  * @url     https://github.com/jasonalvis/affix
- * @license The MIT License (MIT)
  */
 ;(function( $, window, document, undefined ){
   "use strict";
